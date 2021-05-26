@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.yw.mapper.YwSewageFlowMapper">
+
+    <resultMap type="YwSewageFlow" id="YwSewageFlowResult">
+        <result property="id"    column="id"    />
+        <result property="time"    column="time"    />
+        <result property="flow"    column="flow"    />
+        <result property="direction"    column="direction"    />
+        <result property="beginTime"    column="begin_time"    />
+        <result property="endTime"    column="end_time"    />
+    </resultMap>
+
+    <sql id="selectYwSewageFlowVo">
+        select id, time, flow, direction, begin_time, end_time from yw_sewage_flow
+    </sql>
+
+    <select id="selectYwSewageFlowList" parameterType="YwSewageFlow" resultMap="YwSewageFlowResult">
+        <include refid="selectYwSewageFlowVo"/>
+        <where>
+            <if test="time != null "> and time = #{time}</if>
+            <if test="flow != null "> and flow = #{flow}</if>
+            <if test="direction != null "> and direction = #{direction}</if>
+            <if test="beginTime != null "> and begin_time = #{beginTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+        </where>
+    </select>
+
+    <select id="selectYwSewageFlowById" parameterType="Long" resultMap="YwSewageFlowResult">
+        <include refid="selectYwSewageFlowVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertYwSewageFlow" parameterType="YwSewageFlow" useGeneratedKeys="true" keyProperty="id">
+        insert into yw_sewage_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="time != null">time,</if>
+            <if test="flow != null">flow,</if>
+            <if test="direction != null">direction,</if>
+            <if test="beginTime != null">begin_time,</if>
+            <if test="endTime != null">end_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="time != null">#{time},</if>
+            <if test="flow != null">#{flow},</if>
+            <if test="direction != null">#{direction},</if>
+            <if test="beginTime != null">#{beginTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYwSewageFlow" parameterType="YwSewageFlow">
+        update yw_sewage_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="time != null">time = #{time},</if>
+            <if test="flow != null">flow = #{flow},</if>
+            <if test="direction != null">direction = #{direction},</if>
+            <if test="beginTime != null">begin_time = #{beginTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteYwSewageFlowById" parameterType="Long">
+        delete from yw_sewage_flow where id = #{id}
+    </delete>
+
+    <delete id="deleteYwSewageFlowByIds" parameterType="String">
+        delete from yw_sewage_flow where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

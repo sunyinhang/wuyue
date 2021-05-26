@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.yw.mapper.YwDeviceDetectMapper">
+
+    <resultMap type="YwDeviceDetect" id="YwDeviceDetectResult">
+        <result property="id"    column="id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="detectDetail"    column="detect_detail"    />
+        <result property="detecter"    column="detecter"    />
+        <result property="detectTime"    column="detect_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectYwDeviceDetectVo">
+        select id, device_id, detect_detail, detecter, detect_time, create_by, create_time, update_by, update_time from yw_device_detect
+    </sql>
+
+    <select id="selectYwDeviceDetectList" parameterType="YwDeviceDetect" resultMap="YwDeviceDetectResult">
+        <include refid="selectYwDeviceDetectVo"/>
+        <where>
+            <if test="deviceId != null "> and device_id = #{deviceId}</if>
+            <if test="detectDetail != null  and detectDetail != ''"> and detect_detail = #{detectDetail}</if>
+            <if test="detecter != null "> and detecter = #{detecter}</if>
+            <if test="detectTime != null "> and detect_time = #{detectTime}</if>
+        </where>
+    </select>
+
+    <select id="selectYwDeviceDetectById" parameterType="Long" resultMap="YwDeviceDetectResult">
+        <include refid="selectYwDeviceDetectVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertYwDeviceDetect" parameterType="YwDeviceDetect" useGeneratedKeys="true" keyProperty="id">
+        insert into yw_device_detect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">device_id,</if>
+            <if test="detectDetail != null">detect_detail,</if>
+            <if test="detecter != null">detecter,</if>
+            <if test="detectTime != null">detect_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="detectDetail != null">#{detectDetail},</if>
+            <if test="detecter != null">#{detecter},</if>
+            <if test="detectTime != null">#{detectTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYwDeviceDetect" parameterType="YwDeviceDetect">
+        update yw_device_detect
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="detectDetail != null">detect_detail = #{detectDetail},</if>
+            <if test="detecter != null">detecter = #{detecter},</if>
+            <if test="detectTime != null">detect_time = #{detectTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteYwDeviceDetectById" parameterType="Long">
+        delete from yw_device_detect where id = #{id}
+    </delete>
+
+    <delete id="deleteYwDeviceDetectByIds" parameterType="String">
+        delete from yw_device_detect where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

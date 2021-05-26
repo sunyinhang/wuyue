@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.yw.mapper.YwSewageStatisticsMapper">
+
+    <resultMap type="YwSewageStatistics" id="YwSewageStatisticsResult">
+        <result property="id"    column="id"    />
+        <result property="cycle"    column="cycle"    />
+        <result property="enter"    column="enter"    />
+        <result property="out"    column="out"    />
+        <result property="beginDate"    column="begin_date"    />
+        <result property="endTime"    column="end_time"    />
+    </resultMap>
+
+    <sql id="selectYwSewageStatisticsVo">
+        select id, cycle, enter, out, begin_date, end_time from yw_sewage_statistics
+    </sql>
+
+    <select id="selectYwSewageStatisticsList" parameterType="YwSewageStatistics" resultMap="YwSewageStatisticsResult">
+        <include refid="selectYwSewageStatisticsVo"/>
+        <where>
+            <if test="cycle != null  and cycle != ''"> and cycle = #{cycle}</if>
+            <if test="enter != null "> and enter = #{enter}</if>
+            <if test="out != null "> and out = #{out}</if>
+            <if test="beginDate != null "> and begin_date = #{beginDate}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+        </where>
+    </select>
+
+    <select id="selectYwSewageStatisticsById" parameterType="Long" resultMap="YwSewageStatisticsResult">
+        <include refid="selectYwSewageStatisticsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertYwSewageStatistics" parameterType="YwSewageStatistics" useGeneratedKeys="true" keyProperty="id">
+        insert into yw_sewage_statistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cycle != null">cycle,</if>
+            <if test="enter != null">enter,</if>
+            <if test="out != null">out,</if>
+            <if test="beginDate != null">begin_date,</if>
+            <if test="endTime != null">end_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cycle != null">#{cycle},</if>
+            <if test="enter != null">#{enter},</if>
+            <if test="out != null">#{out},</if>
+            <if test="beginDate != null">#{beginDate},</if>
+            <if test="endTime != null">#{endTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateYwSewageStatistics" parameterType="YwSewageStatistics">
+        update yw_sewage_statistics
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cycle != null">cycle = #{cycle},</if>
+            <if test="enter != null">enter = #{enter},</if>
+            <if test="out != null">out = #{out},</if>
+            <if test="beginDate != null">begin_date = #{beginDate},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteYwSewageStatisticsById" parameterType="Long">
+        delete from yw_sewage_statistics where id = #{id}
+    </delete>
+
+    <delete id="deleteYwSewageStatisticsByIds" parameterType="String">
+        delete from yw_sewage_statistics where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
